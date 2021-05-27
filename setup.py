@@ -1,6 +1,7 @@
 from setuptools import setup
 
-setup(name='rpgQTL',
+setup(
+      name='rpgQTL',
       version='0.0.1',
       description='Regions per gene (rpg) QTL',
       url='https://github.com/gaotc200/rpgQTL',
@@ -8,4 +9,11 @@ setup(name='rpgQTL',
       author_email='jiahao.gao@yale.edu',
       license='BSD 3',
       packages=['rpgQTL'],
-      zip_safe=False)
+      zip_safe=False,
+      install_requires = [
+      'numpy',
+      'pandas',
+      'scipy',
+      'torch',
+      'tensorqtl']
+)
