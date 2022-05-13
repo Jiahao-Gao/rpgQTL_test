@@ -154,7 +154,7 @@ class rpg_igc(object):
 
 def run_nominal(genotype_df, variant_df, phenotype_df, phenotype_pos_df, covariates_df,
                     rpg_df, l_window=1000000, s_window=300000, NonHiCType='s_window',
-                    output_dir='.', prefix='prefix', write_stats=True, logger=None, verbose=True):
+                    output_dir='.', prefix='RPG', write_stats=True, logger=None, verbose=True):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
