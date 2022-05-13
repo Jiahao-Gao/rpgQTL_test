@@ -75,15 +75,26 @@ class rpg_igc(object):
             bool_lwindow = candidate_pos.between(tss - l_window, tss + l_window)
             bool_swindow = candidate_pos.between(tss - s_window, tss + s_window)
 
-            rpg_phenotypes = rpg_df[3].values
+
+            if isinstance(rpg_df, pd.DataFrame):
+                rpg_phenotypes = rpg_df[3].values
+            elif isinstance(rpg_df, str):
+                rpg_phenotypes = np.array(os.listdir(rpg_df))
+            else:
+                raise Exception('not valid rpg_df')
+
             if phenotype_id in rpg_phenotypes:
                 # for genes have hi-c interaction
                 
-                phenotype_rpg_coor = rpg_df[rpg_df[3] == phenotype_id].iloc[:,[1,2]].values
-                bool_rpg = pd.Series([False]*len(bool_lwindow), index=bool_lwindow.index)
+                if isinstance(rpg_df, pd.DataFrame):
+                    phenotype_rpg_coor = rpg_df[rpg_df[3] == phenotype_id].iloc[:,[1,2]].values
+                elif isinstance(rpg_df, str):
+                    phenotype_rpg_coor = pd.read_csv(rpg_df+"/"+phenotype_id, sep="\t", header=None).iloc[:,[1,2]].values
+                    
+                bool_rpg = pd.Series([False]*len(bool_lwindow), index=bool_lwindow.index) # init with all False
                 for rpg_coor in phenotype_rpg_coor:
                     cond = candidate_pos.between(rpg_coor[0], rpg_coor[1])
-                    bool_rpg = bool_rpg|cond
+                    bool_rpg = bool_rpg|cond # add True
 
                 # use everything in swindow (TSS+-nbp, 'promoter')
                 # use everything in RPG (all cis-regions, 'enhancer')
@@ -118,13 +129,18 @@ class rpg_igc(object):
         Generate batches from genotype data
         Returns: phenotype array, genotype matrix, genotype index, phenotype ID(s)
         """
+        chr_offset = 0
         if chrom is None:
             phenotype_ids = self.phenotype_df.index
             chr_offset = 0
         else:
             phenotype_ids = self.phenotype_pos_df[self.phenotype_pos_df['chr']==chrom].index
             offset_dict = {i:j for i,j in zip(*np.unique(self.phenotype_pos_df['chr'], return_index=True))}
-            chr_offset = offset_dict[chrom]
+            if chrom in offset_dict.keys():
+                chr_offset = offset_dict[chrom]
+            else:
+                (nulla, nullb, nullc, nulld) = (None, None, None, None)
+                yield nulla,nullb,nullc,nulld
 
         index_dict = {j:i for i,j in enumerate(self.phenotype_df.index)}
 
@@ -187,6 +203,12 @@ def run_nominal(genotype_df, variant_df, phenotype_df, phenotype_pos_df, covaria
 
         start = 0
         for k, (phenotype, genotypes, genotype_range, phenotype_id) in enumerate(igc.generate_data(chrom=chrom, verbose=verbose), k+1):
+
+            # if no valid data, break this igc.generate_data loop
+            if phenotype is None:
+                logger.write('Skipping chromosome {} with no valid phenotype'.format(chrom))
+                break
+                
             # copy genotypes to GPU
             phenotype_t = torch.tensor(phenotype, dtype=torch.float).to(device)
             genotypes_t = torch.tensor(genotypes, dtype=torch.float).to(device)
@@ -211,6 +233,10 @@ def run_nominal(genotype_df, variant_df, phenotype_df, phenotype_pos_df, covaria
                 chr_res['slope'][start:start+n] = slope
                 chr_res['slope_se'][start:start+n] = slope_se
             start += n  # update pointer
+        
+        # if no valid data, skip to next chromosome
+        if phenotype is None:
+            continue
 
         logger.write('    time elapsed: {:.2f} min'.format((time.time()-start_time)/60))
 
@@ -268,6 +294,11 @@ def run_permutation(genotype_df, variant_df, phenotype_df, phenotype_pos_df, cov
 
     for k, (phenotype, genotypes, genotype_range, phenotype_id) in enumerate(igc.generate_data(verbose=verbose), 1):
         # copy genotypes to GPU
+        
+        # if no valid data, skip to next batch
+        if phenotype is None:
+            continue
+            
         genotypes_t = torch.tensor(genotypes, dtype=torch.float).to(device)
         genotypes_t = genotypes_t[:,genotype_ix_t]
         core.impute_mean(genotypes_t)
@@ -294,7 +325,6 @@ def run_permutation(genotype_df, variant_df, phenotype_df, phenotype_pos_df, cov
         if beta_approx:
             res_s[['pval_beta', 'beta_shape1', 'beta_shape2', 'true_df', 'pval_true_df']] = core.calculate_beta_approx_pval(r2_perm, r_nominal*r_nominal, dof)
         res_df.append(res_s)
-    
 
     res_df = pd.concat(res_df, axis=1, sort=False).T
     res_df.index.name = 'phenotype_id'
@@ -356,6 +386,10 @@ def run_independent(genotype_df, variant_df, cis_df, phenotype_df, phenotype_pos
     start_time = time.time()
 
     for k, (phenotype, genotypes, genotype_range, phenotype_id) in enumerate(igc.generate_data(verbose=verbose), 1):
+        # if no valid data, skip to next batch
+        if phenotype is None:
+            continue
+        
         # copy genotypes to GPU
         phenotype_t = torch.tensor(phenotype, dtype=torch.float).to(device)
         genotypes_t = torch.tensor(genotypes, dtype=torch.float).to(device)
