@@ -36,7 +36,7 @@ class background:
 
 class rpg_igc(object):
     def __init__(self, genotype_df, variant_df, phenotype_df, phenotype_pos_df,
-                 rpg_df, l_window=1000000, s_window=300000, NonHiCType='s_window'):
+                 rpg_df, l_window=2000000, s_window=0, NonHiCType='s_window'):
         
         assert (genotype_df.index==variant_df.index).all()
         assert (phenotype_df.index==phenotype_df.index.unique()).all()
@@ -153,7 +153,7 @@ class rpg_igc(object):
 
 
 def run_nominal(genotype_df, variant_df, phenotype_df, phenotype_pos_df, covariates_df,
-                    rpg_df, l_window=1000000, s_window=300000, NonHiCType='s_window',
+                    rpg_df, l_window=2000000, s_window=0, NonHiCType='s_window',
                     output_dir='.', prefix='RPG', write_stats=True, logger=None, verbose=True):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -256,7 +256,7 @@ def run_nominal(genotype_df, variant_df, phenotype_df, phenotype_pos_df, covaria
 
 
 def run_permutation(genotype_df, variant_df, phenotype_df, phenotype_pos_df, covariates_df,
-                rpg_df, l_window=1000000, s_window=300000, NonHiCType='s_window',
+                rpg_df, l_window=2000000, s_window=0, NonHiCType='s_window',
                 beta_approx=True, nperm=10000, logger=None, seed=None, verbose=True):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -334,7 +334,7 @@ def run_permutation(genotype_df, variant_df, phenotype_df, phenotype_pos_df, cov
 
 
 def run_independent(genotype_df, variant_df, cis_df, phenotype_df, phenotype_pos_df, covariates_df,
-                        rpg_df, l_window=1000000, s_window=300000, NonHiCType='s_window',
+                        rpg_df, l_window=2000000, s_window=0, NonHiCType='s_window',
                         fdr=0.05, fdr_col='qval', nperm=10000, logger=None, seed=None, verbose=True):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
