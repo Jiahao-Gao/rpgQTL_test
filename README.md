@@ -14,7 +14,7 @@
 
 #### 2. Create conda environment and install basic packages
 *If you did not install mamba, replace all `mamba` by `conda` in all following parts.*
-* `mamba create -n rpgQTL python=3.8`
+* `mamba create -n rpgQTL python=3.8`. You can change the environment name `rpgQTL` to anything you want.
 * `conda activate rpgQTL`. Confirm the activation by `which python`. This should be under the rpgQTL environment folder.
 * `mamba install numpy=1.20.1 scipy=1.7.0 pandas=1.2.3 matplotlib=3.3.4 jupyter ipython rpy2=3.4.2`
 
