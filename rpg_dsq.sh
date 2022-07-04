@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --array 0-11
+#SBATCH --array 192-203
 #SBATCH --job-name rpg
 #SBATCH --partition pi_gerstein_gpu
 #SBATCH --time 3-23:59:59
