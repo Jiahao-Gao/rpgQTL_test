@@ -25,7 +25,7 @@
 * (Easy way) Simply copy `rpgQTL.py` file into your working directory. 
 * (Advanced way) (TO BE DONE) Install rpgQTL as package.
 
-#### 6. Running scripts in general
+#### 6. Running the scripts in general (You can skip this if you just want to run the example)
 * To run any scripts in the rpgQTL environment and make used of GPU, add the following before your `python file.py`:
   * `source /home/jg2447/miniconda3/etc/profile.d/conda.sh; conda activate tensorQTL; module load CUDA/11.1.1-GCC-10.2.0; module load cuDNN/8.0.5.39-CUDA-11.1.1;`
 * For Farnam, add `#SBATCH --gpus-per-node titanv:1` to the sbatch jobfile to indicate using of one titanv gpu.
@@ -34,4 +34,6 @@
 * `sinfo -N -O NodeHost:.9,Partition:.19,AllocMem:.11,FreeMem:.11,Memory:.11,CPUsState:.15,Gres:.22,GresUsed:.30 | grep "pi_gerstein_gpu\|HOSTNAMES" | (sed -u 1q; sort -k1,1)`
   * You can use this command to check all pi_gersetin_gpu node current states. 
   * The available gpu names are also shown.
-* See the `rpg_dsq.sh` for an example.
+
+#### 7. Running the example
+* In `rpg_dsq.sh` line 9: replace the two `/gpfs/slayman/pi/gerstein/jg2447/GTEX/scripts_run_rpg` to your absolute working folder path (you can get this by `pwd -P`)
