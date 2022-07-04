@@ -1,5 +1,5 @@
 ### Install from scratch
-#### 1. Install miniconda
+#### 1. Install miniconda (see 1' for alternative)
 * Go to https://docs.conda.io/en/latest/miniconda.html#linux-installers, download the Linux installers Python 3.8 file.  
 (e.g. [Miniconda3-py38_4.12.0-Linux-x86_64.sh](https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x86_64.sh))  
 * Install the file by `bash Miniconda3-py38_4.12.0-Linux-x86_64.sh`.
@@ -8,8 +8,12 @@
 * Close and re-open the terminal. Check if conda is successfully installed by `which python`. This should be under your miniconda core directory.
 * (Highly recommand) Install Mamba by `conda install mamba -n base -c conda-forge`. The conda package manager will freeze if your conda environment gets too big.
 
+#### 1' Using miniconda module on Farnam
+* `module load miniconda`
+* You probably could not use mamba with this. Just use `conda` in all following parts.
+
 #### 2. Create conda environment and install basic packages
-*If you did not install mamba, replace all `mamba` by `conda`.*
+*If you did not install mamba, replace all `mamba` by `conda` in all following parts.*
 * `mamba create -n rpgQTL python=3.8`
 * `conda activate rpgQTL`. Confirm the activation by `which python`. This should be under the rpgQTL environment folder.
 * `mamba install numpy=1.20.1 scipy=1.7.0 pandas=1.2.3 matplotlib=3.3.4 jupyter ipython rpy2=3.4.2`
