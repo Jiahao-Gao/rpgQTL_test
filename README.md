@@ -44,3 +44,4 @@
 * In `rpg_dsq.sh` line 9: replace the two `/gpfs/slayman/pi/gerstein/jg2447/GTEX/scripts_run_rpg` to your absolute working folder path (you can get this by `pwd -P`)
 * Submit job: `sbatch rpg_dsq.sh`
 * For each job, this will create a folder under the current working folder for the output.
+* In `rpg_dsq.sh` line 2: `#SBATCH --array 192-203`. The current example is for stomach. Change to other number (starts from 0) to run other jobs in the joblist.
