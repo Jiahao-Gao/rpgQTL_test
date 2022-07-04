@@ -37,3 +37,5 @@
 
 #### 7. Running the example
 * In `rpg_dsq.sh` line 9: replace the two `/gpfs/slayman/pi/gerstein/jg2447/GTEX/scripts_run_rpg` to your absolute working folder path (you can get this by `pwd -P`)
+* Submit job: `sbatch rpg_dsq.sh`
+* For each job, this will create a folder under the current working folder for the output.
