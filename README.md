@@ -10,7 +10,7 @@
 
 #### 1' Using miniconda module on Farnam
 * `module load miniconda`
-* You probably could not use mamba with this. Just use `conda` in all following parts.
+* I personally encounter several problem while installing package using this moduled miniconda. NOT recommended.
 
 #### 2. Create conda environment and install basic packages
 *If you did not install mamba, replace all `mamba` by `conda` in all following parts.*
