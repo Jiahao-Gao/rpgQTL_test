@@ -18,6 +18,7 @@
    * You can change the environment name `rpgQTL` to anything you want. If you do, remember to change for all the following parts.
 * `conda activate rpgQTL`. Confirm the activation by `which python`. This should be under the rpgQTL environment folder.
 * `mamba install numpy=1.20.1 scipy=1.7.0 pandas=1.2.3 matplotlib=3.3.4 jupyter ipython rpy2=3.4.2 -c conda-forge`
+   * The version of these packages should not matter, but had not been tested.
 
 #### 3. Install pytorch
 * `mamba install cudatoolkit=11.1.1 pytorch=1.8.0 torchaudio=0.8.0 torchvision=0.2.2 -c pytorch`
