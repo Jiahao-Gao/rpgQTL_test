@@ -10,7 +10,7 @@
 
 #### 1' Using miniconda module on Farnam
 * `module load miniconda`
-* I personally encounter several problem while installing package using this moduled miniconda. NOT recommended.
+* I personally encounter several problems while installing package using this moduled miniconda. NOT recommended.
 
 #### 2. Create conda environment and install basic packages
 *If you did not install mamba, replace all `mamba` by `conda` in all following parts.*
@@ -21,7 +21,7 @@
    * The version of these packages should not matter, but had not been tested.
 
 #### 3. Install pytorch
-* `mamba install cudatoolkit=11.1.1 pytorch=1.8.0 torchaudio=0.8.0 torchvision=0.2.2 -c pytorch`
+* `mamba install cudatoolkit=11.1.1 pytorch=1.8.0 torchaudio=0.8.0 torchvision=0.2.2 -c pytorch -c conda-forge`
 
 #### 4. Install tensorQTL
 * `which pip`. Make sure we are using the pip under rpgQTL environment folder.
